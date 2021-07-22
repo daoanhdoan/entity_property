@@ -1,7 +1,7 @@
 {
     "name": "daoanhdoan/entity_property",
-    "description": "Open source constituent relationship management for non-profits, NGOs and advocacy organizations.",
-    "type": "drupal-module",
+    "description": "Drupal custom module.",
+    "type": "drupal-custom-module",
     "license": "AGPL-3.0",
     "authors": [
         {
