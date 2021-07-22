@@ -1,0 +1,35 @@
+<?php
+/**
+ *
+ */
+
+use Drupal\Core\Field\FieldDefinitionInterface;
+
+/**
+ * @see hook_entity_base_field_info()
+ * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
+ */
+function entity_property_entity_base_field_info(\Drupal\Core\Entity\EntityTypeInterface $entity_type) {
+  $config = \Drupal::config("entity_property.properties." . $entity_type->id());
+  if ($properties = $config->getRawData()) {
+    foreach ($properties as $id => $property) {
+      /** @var FieldDefinitionInterface[] $fields */
+      $fields[$id] = \Drupal::service('entity_property')->buildFieldDefinition($id, $entity_type->id(), $property);
+    }
+    return $fields;
+  }
+}
+
+/**
+ * @see hook_entity_base_field_info_alter()
+ * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
+ */
+function entity_property_entity_base_field_info_alter(&$fields, \Drupal\Core\Entity\EntityTypeInterface $entity_type) {
+  // Alter the mymodule_text field to use a custom class.
+  if (!empty($fields['uid'])) {
+    $fields['uid']->setDisplayOptions('form', ['region' => 'hidden']);
+  }
+  if (!empty($fields['created'])) {
+    $fields['created']->setDisplayOptions('form', ['region' => 'hidden']);
+  }
+}

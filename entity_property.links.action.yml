@@ -1,0 +1,10 @@
+entity_property.entity_property_add:
+  route_name: entity_property.entity_property_add
+  title: 'Add property'
+  appears_on:
+    - entity_property.entity_property
+entity_property.entity_property_add_bulk:
+  route_name: entity_property.entity_property_add_bulk
+  title: 'Add properties'
+  appears_on:
+    - entity_property.entity_property

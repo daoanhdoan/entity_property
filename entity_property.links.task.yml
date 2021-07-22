@@ -1,0 +1,16 @@
+entity_property.entity_types:
+  title: 'Types'
+  route_name: entity_property.entity_types
+  base_route: entity_property.entity_types
+entity_property.settings:
+  title: 'Settings'
+  route_name: entity_property.settings
+  base_route: entity_property.entity_types
+entity_property.entity_property:
+  title: 'List'
+  route_name: entity_property.entity_property
+  base_route: entity_property.entity_property
+entity_property.entity_property_add:
+  title: 'Add property'
+  route_name: entity_property.entity_property_add
+  base_route: entity_property.entity_property

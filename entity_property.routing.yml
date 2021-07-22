@@ -1,0 +1,81 @@
+entity_property.settings:
+  path: '/admin/structure/entity-property'
+  defaults:
+    _title: 'Entity Properties'
+    _form: '\Drupal\entity_property\Form\EntityPropertySettingsForm'
+  requirements:
+    _permission: 'administer entity property'
+
+entity_property.entity_types:
+  path: '/admin/structure/entity-property/types'
+  defaults:
+    _title: 'Entity types'
+    _controller: '\Drupal\entity_property\Controller\EntityPropertyController::types'
+  requirements:
+    _permission: 'administer entity property'
+
+entity_property.entity_property:
+  path: '/admin/structure/entity-property/types/{entity_type}'
+  defaults:
+    _title_callback: '\Drupal\entity_property\Controller\EntityPropertyController::title'
+    _title_arguments:
+      entity_type:
+        type: entity:entity_type
+    _controller: '\Drupal\entity_property\Controller\EntityPropertyController::properties'
+  requirements:
+    _permission: 'administer entity property'
+  options:
+    parameters:
+      entity_type:
+        type: entity:entity_type
+
+entity_property.entity_property_add:
+  path: '/admin/structure/entity-property/types/{entity_type}/add'
+  defaults:
+    _title: 'Add property'
+    _form: '\Drupal\entity_property\Form\EntityPropertyForm'
+  requirements:
+    _permission: 'administer entity property'
+  options:
+    parameters:
+      entity_type:
+        type: entity:entity_type
+entity_property.entity_property_add_bulk:
+  path: '/admin/structure/entity-property/types/{entity_type}/add-properties'
+  defaults:
+    _title: 'Add properties'
+    _form: '\Drupal\entity_property\Form\EntityPropertiesForm'
+  requirements:
+    _permission: 'administer entity property'
+  options:
+    parameters:
+      entity_type:
+        type: entity:entity_type
+
+entity_property.entity_property_edit:
+  path: '/admin/structure/entity-property/types/{entity_type}/{property_name}'
+  defaults:
+    _title: 'Property edit'
+    _form: '\Drupal\entity_property\Form\EntityPropertyForm'
+  requirements:
+    _permission: 'administer entity property'
+  options:
+    parameters:
+      entity_type:
+        type: entity:entity_type
+      property_name:
+        type: 'property_name'
+
+entity_property.entity_property_delete:
+  path: '/admin/structure/entity-property/types/{entity_type}/{property_name}/delete'
+  defaults:
+    _title: 'Property delete'
+    _form: '\Drupal\entity_property\Form\EntityPropertyDeleteConfirmForm'
+  requirements:
+    _permission: 'administer entity property'
+  options:
+    parameters:
+      entity_type:
+        type: entity:entity_type
+      property_name:
+        type: 'property_name'

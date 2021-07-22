@@ -1,0 +1,33 @@
+entity_property.properties.*:
+  type: config_entity
+  label: 'Entity properties'
+  mapping:
+    label:
+      type: string
+      label: 'Type'
+    name:
+      type: label
+      label: 'Name'
+    type:
+      type: string
+      label: 'Type'
+    settings:
+      type: field.storage_settings.[%parent.type]
+entity_property.settings:
+  type: config_object
+  mapping:
+    show_all_properties:
+      type: boolean
+      label: 'Show Programing Properties'
+    entity_types:
+      type: sequence
+      label: 'Types'
+      sequence:
+        type: string
+        label: 'Types'
+    field_types:
+      type: sequence
+      label: 'Field types'
+      sequence:
+        type: string
+        label: 'Field types'

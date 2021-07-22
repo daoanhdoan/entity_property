@@ -1,0 +1,5 @@
+entity_property.settings:
+  route_name: entity_property.entity_types
+  title: 'Entity properties'
+  description: 'Configure settings for Entity properties.'
+  parent: system.admin_structure

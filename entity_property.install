@@ -1,0 +1,10 @@
+<?php
+/**
+ * @file
+ */
+/**
+ * Implement hook_install()
+ */
+function entity_property_install() {
+  module_set_weight('entity_property', 99999);
+}

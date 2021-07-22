@@ -1,0 +1,20 @@
+show_all_properties: true
+field_types:
+  boolean: boolean
+  datetime: datetime
+  decimal: decimal
+  email: email
+  entity_reference: entity_reference
+  file: file
+  float: float
+  image: image
+  integer: integer
+  link: link
+  string: string
+  string_long: string_long
+  text: text
+  text_long: text_long
+  text_with_summary: text_with_summary
+  timestamp: timestamp
+entity_types:
+  node: node
