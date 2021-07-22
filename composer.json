@@ -3,6 +3,7 @@
     "description": "Drupal custom module.",
     "type": "drupal-custom-module",
     "license": "AGPL-3.0",
+    "version": "1.0.0",
     "authors": [
         {
             "name": "Anh Doan",
