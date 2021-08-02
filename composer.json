@@ -1,16 +1,9 @@
 {
-    "name": "daoanhdoan/entity_property",
-    "description": "Drupal custom module.",
-    "type": "drupal-custom-module",
-    "license": "AGPL-3.0",
-    "version": "1.0.0",
-    "authors": [
-        {
-            "name": "Anh Doan",
-            "role": "Product Manager"
-        }
-    ],
-    "extra": {
-        "installer-name": "entity_property"
-    }
+  "name": "daoanhdoan/entity_property",
+  "description": "Entity Property",
+  "type": "drupal-custom-module",
+  "license":"GPL-2.0",
+  "extra": {
+    "installer-name": "entity_property"
+  }
 }
