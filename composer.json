@@ -1,9 +1,9 @@
 {
-  "name": "daoanhdoan/entity_property",
-  "description": "Entity Property",
-  "type": "drupal-custom-module",
-  "license":"GPL-2.0",
-  "extra": {
-    "installer-name": "entity_property"
-  }
+    "name": "daoanhdoan/entity_property",
+    "description": "Entity Property",
+    "type": "drupal-custom-module",
+    "license": "GPL-2.0",
+    "extra": {
+        "installer-name": "entity_property"
+    }
 }
