@@ -26,43 +26,6 @@ class EntityPropertySettingsForm extends ConfigFormBase
         $field_type_options[$name] = $field_type['label'];
       }
     }
-    /**
-     * @todo: Check field types support
-     */
-    //foreach ($field_type_options as $name => $label) {
-      /*$field_name = $name . "_test";
-      $field_definition = BaseFieldDefinition::create($name)
-        ->setName($field_name)
-        ->setLabel($label)
-        ->setTargetEntityTypeId('node');
-      if ($name == 'entity_reference') {
-        $field_definition->setSetting('target_type', 'node');
-        $handler = "default:node";
-        $field_definition->setSetting('handler', $handler);
-      }
-
-      $configuration = [
-        'field_definition' => $field_definition,
-        'name' => $field_name,
-        'parent' => NULL,
-      ];*/
-      /** @var \Drupal\Core\Field\FieldItemInterface $instance */
-    /*$instance = $fieldTypePluginManager->createInstance($name, $configuration);
-    /* (is_callable([$instance, "fieldSettingsForm"])) {
-      ob_start();
-      $form_settings = @call_user_func_array([$instance, "fieldSettingsForm"], [$form, $form_state]);
-      ob_end_flush();
-      if ($form_settings) {
-
-      }
-      elseif($form_settings === NULL) {
-        $form['settings']['error'] = [
-          '#markup' => t('Field type %type don\'t support use same property.', ['%type' => $name])
-        ];
-      }
-    }*/
-    //}
-
     $form['show_all_properties'] = array (
       '#type' => 'checkbox',
       '#title' => t('Show programing properties'),
