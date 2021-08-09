@@ -26,6 +26,7 @@ class EntityPropertySettingsForm extends ConfigFormBase
         $field_type_options[$name] = $field_type['label'];
       }
     }
+
     $form['show_all_properties'] = array (
       '#type' => 'checkbox',
       '#title' => t('Show programing properties'),
