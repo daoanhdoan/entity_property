@@ -47,20 +47,20 @@ class EntityPropertySettingsForm extends ConfigFormBase
         'parent' => NULL,
       ];*/
       /** @var \Drupal\Core\Field\FieldItemInterface $instance */
-      $instance = $fieldTypePluginManager->createInstance($name, $configuration);
-      /*if (is_callable([$instance, "fieldSettingsForm"])) {
-        ob_start();
-        $form_settings = @call_user_func_array([$instance, "fieldSettingsForm"], [$form, $form_state]);
-        ob_end_flush();
-        if ($form_settings) {
+    /*$instance = $fieldTypePluginManager->createInstance($name, $configuration);
+    /* (is_callable([$instance, "fieldSettingsForm"])) {
+      ob_start();
+      $form_settings = @call_user_func_array([$instance, "fieldSettingsForm"], [$form, $form_state]);
+      ob_end_flush();
+      if ($form_settings) {
 
-        }
-        elseif($form_settings === NULL) {
-          $form['settings']['error'] = [
-            '#markup' => t('Field type %type don\'t support use same property.', ['%type' => $name])
-          ];
-        }
-      }*/
+      }
+      elseif($form_settings === NULL) {
+        $form['settings']['error'] = [
+          '#markup' => t('Field type %type don\'t support use same property.', ['%type' => $name])
+        ];
+      }
+    }*/
     //}
 
     $form['show_all_properties'] = array (
