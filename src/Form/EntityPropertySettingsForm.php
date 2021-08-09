@@ -29,8 +29,8 @@ class EntityPropertySettingsForm extends ConfigFormBase
     /**
      * @todo: Check field types support
      */
-    foreach ($field_type_options as $name => $label) {
-      $field_name = $name . "_test";
+    //foreach ($field_type_options as $name => $label) {
+      /*$field_name = $name . "_test";
       $field_definition = BaseFieldDefinition::create($name)
         ->setName($field_name)
         ->setLabel($label)
@@ -45,7 +45,7 @@ class EntityPropertySettingsForm extends ConfigFormBase
         'field_definition' => $field_definition,
         'name' => $field_name,
         'parent' => NULL,
-      ];
+      ];*/
       /** @var \Drupal\Core\Field\FieldItemInterface $instance */
       $instance = $fieldTypePluginManager->createInstance($name, $configuration);
       /*if (is_callable([$instance, "fieldSettingsForm"])) {
@@ -61,7 +61,7 @@ class EntityPropertySettingsForm extends ConfigFormBase
           ];
         }
       }*/
-    }
+    //}
 
     $form['show_all_properties'] = array (
       '#type' => 'checkbox',
