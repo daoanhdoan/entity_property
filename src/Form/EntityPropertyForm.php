@@ -83,6 +83,7 @@ class EntityPropertyForm extends FormBase {
       $this->entity_type = $entity_type;
       /** @var ImmutableConfig $config */
       $config = \Drupal::config('entity_property.properties.' . $this->entity_type->id());
+      $form['#entity_type'] = $entity_type;
     }
     else {
       \Drupal::messenger()->addError(t('The "@type" entity type does not exist.', ['@type' => $entity_type]));
@@ -193,31 +194,22 @@ class EntityPropertyForm extends FormBase {
       if (!empty($property['settings'])) {
         $field_definition->setSettings($property['settings']);
       }
+
       if ($type == 'entity_reference') {
         $target_type = !empty($values['settings']['target_type']) ? $values['settings']['target_type'] : "node";
         $field_definition->setSetting('target_type', $target_type);
         $handler = !empty($values['settings']['handler']) ? $values['settings']['handler'] : "default:{$target_type}";
         $field_definition->setSetting('handler', $handler);
-      }
-
-      $configuration = [
-        'field_definition' => $field_definition,
-        'name' => $field_name,
-        'parent' => NULL,
-      ];
-      /** @var FieldItemInterface $instance */
-      $instance = $this->fieldTypePluginManager->createInstance($type, $configuration);
-
-      if ($type == 'entity_reference') {
         $form['settings']['target_type'] = [
           '#type' => 'select',
           '#title' => t('Type of item to reference'),
           '#options' => Drupal::service('entity_type.repository')->getEntityTypeLabels(TRUE),
           '#default_value' => $field_definition->getSetting('target_type'),
           '#required' => TRUE,
+          '#validate' => ['\Drupal\entity_property\Form\EntityPropertyForm::validateTargetType'],
           '#size' => 1,
           '#ajax' => [
-            'callback' => '\Drupal\entity_property\Form\EntityPropertyForm::ajaxUpdate',
+            'callback' => '\Drupal\entity_property\Form\EntityPropertyForm::updateTargetTypeAjaxCallback',
             'wrapper' => $wrapper_id,
             'event' => 'change'
           ]
@@ -226,8 +218,8 @@ class EntityPropertyForm extends FormBase {
         $form['settings']['handler'] = [
           '#type' => 'select',
           '#title' => t('Reference method'),
-          '#options' => $this->entityProperty->getAllSelection($field_definition->getSetting('target_type')),
-          '#default_value' => $field_definition->getSetting('handler'),
+          '#options' => $this->entityProperty->getAllSelection($target_type),
+          '#default_value' => $handler,
           '#required' => TRUE,
           '#limit_validation_errors' => [],
           '#ajax' => [
@@ -243,10 +235,17 @@ class EntityPropertyForm extends FormBase {
           '#attributes' => ['class' => ['entity_reference-settings']],
         ];
 
-        $handler = Drupal::service('plugin.manager.entity_reference_selection')->getSelectionHandler($field_definition);
-        $form['settings']['handler_settings'] += $handler->buildConfigurationForm([], $form_state);
+        $selectionHandler = Drupal::service('plugin.manager.entity_reference_selection')->getSelectionHandler($field_definition);
+        $form['settings']['handler_settings'] += $selectionHandler->buildConfigurationForm([], $form_state);
       }
       else {
+        $configuration = [
+          'field_definition' => $field_definition,
+          'name' => $field_name,
+          'parent' => NULL,
+        ];
+        /** @var FieldItemInterface $instance */
+        $instance = $this->fieldTypePluginManager->createInstance($type, $configuration);
         $form['settings'] += $instance->storageSettingsForm($form, $form_state, FALSE);
         if (is_callable([$instance, "fieldSettingsForm"])) {
           $form_settings = call_user_func_array([$instance, "fieldSettingsForm"], [$form, $form_state]);
@@ -287,6 +286,25 @@ class EntityPropertyForm extends FormBase {
   public static function ajaxUpdate(array $form, FormStateInterface &$form_state)
   {
     $form_state->setRebuild();
+    return $form['settings'];
+  }
+
+  public static function validateTargetType(array &$form, FormStateInterface &$form_state)
+  {
+    $trigger = $form_state->getTriggeringElement();
+    if ($trigger['#name'] === 'settings[target_type]') {
+      $target_type = $form_state->getValue(['settings', 'target_type']);
+      $handler = "default:{$target_type}";
+      $form_state->setValue(['settings', 'handler'], $handler);
+      $form_state->setRebuild();
+    }
+  }
+
+  public static function updateTargetTypeAjaxCallback(array &$form, FormStateInterface &$form_state)
+  {
+    $target_type = $form_state->getValue(['settings', 'target_type']);
+    $handler = "default:{$target_type}";
+    $form['settings']['handler']['#value'] = $handler;
     return $form['settings'];
   }
 

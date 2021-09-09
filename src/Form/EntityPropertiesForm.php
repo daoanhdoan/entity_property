@@ -196,31 +196,22 @@ class EntityPropertiesForm extends FormBase {
         if (!empty($value['settings'])) {
           $field_definition->setSettings($value['settings']);
         }
+
         if ($type == 'entity_reference') {
           $target_type = !empty($value['settings']['target_type']) ? $value['settings']['target_type'] : "node";
           $field_definition->setSetting('target_type', $target_type);
           $handler = !empty($value['settings']['handler']) ? $value['settings']['handler'] : "default:{$target_type}";
           $field_definition->setSetting('handler', $handler);
-        }
-
-        $configuration = [
-          'field_definition' => $field_definition,
-          'name' => $field_name,
-          'parent' => NULL,
-        ];
-        /** @var \Drupal\Core\Field\FieldItemInterface $instance */
-        $instance = $this->fieldTypePluginManager->createInstance($type, $configuration);
-
-        if ($type == 'entity_reference') {
           $element['settings']['target_type'] = [
             '#type' => 'select',
             '#title' => t('Type of item to reference'),
             '#options' => \Drupal::service('entity_type.repository')->getEntityTypeLabels(TRUE),
             '#default_value' => $field_definition->getSetting('target_type'),
+            '#validate' => ['\Drupal\entity_property\Form\EntityPropertiesForm::validateTargetType'],
             '#required' => TRUE,
             '#size' => 1,
             '#ajax' => [
-              'callback' => '\Drupal\entity_property\Form\EntityPropertiesForm::ajaxUpdate',
+              'callback' => '\Drupal\entity_property\Form\EntityPropertiesForm::updateTargetTypeAjaxCallback',
               'wrapper' => $wrapper,
               'event' => 'change'
             ]
@@ -249,6 +240,13 @@ class EntityPropertiesForm extends FormBase {
           $handler = \Drupal::service('plugin.manager.entity_reference_selection')->getSelectionHandler($field_definition);
           $element['settings']['handler_settings'] += $handler->buildConfigurationForm([], $form_state);
         } else {
+          $configuration = [
+            'field_definition' => $field_definition,
+            'name' => $field_name,
+            'parent' => NULL,
+          ];
+          /** @var \Drupal\Core\Field\FieldItemInterface $instance */
+          $instance = $this->fieldTypePluginManager->createInstance($type, $configuration);
           $element['settings'] += $instance->storageSettingsForm($element, $form_state, FALSE);
           if (is_callable([$instance, "fieldSettingsForm"])) {
             $form_settings = call_user_func_array([$instance, "fieldSettingsForm"], [$element, $form_state]);
@@ -295,8 +293,33 @@ class EntityPropertiesForm extends FormBase {
    *
    */
   public function ajaxCallback($form, FormStateInterface &$form_state) {
+    $form_state->setRebuild();
     return $form['properties'];
   }
+
+  public static function validateTargetType(array &$form, FormStateInterface &$form_state)
+  {
+    $trigger = $form_state->getTriggeringElement();
+    if (in_array('target_type', $trigger['#parents'])) {
+      $parents = array_slice($trigger['#parents'], 0, -2);
+      $target_type = $form_state->getValue($trigger['#parents']);
+      $handler = "default:{$target_type}";
+      $form_state->setValue(array_merge($parents, ['settings', 'handler']), $handler);
+      $form_state->setRebuild();
+    }
+  }
+
+  public static function updateTargetTypeAjaxCallback(array &$form, FormStateInterface &$form_state)
+  {
+    $trigger = $form_state->getTriggeringElement();
+    $parents = array_slice($trigger['#parents'], 0, -2);
+    $target_type = $form_state->getValue($trigger['#parents']);
+    $handler = "default:{$target_type}";
+    $element = NestedArray::getValue($form, $parents);
+    $element['settings']['handler']['#value'] = $handler;
+    return $element['settings'];
+  }
+
   /**
    *
    */
