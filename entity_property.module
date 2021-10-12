@@ -4,6 +4,7 @@
  */
 
 use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\views\ViewsData;
 
 /**
  * @see hook_entity_base_field_info()
@@ -31,5 +32,26 @@ function entity_property_entity_base_field_info_alter(&$fields, \Drupal\Core\Ent
   }
   if (!empty($fields['created'])) {
     $fields['created']->setDisplayOptions('form', ['region' => 'hidden']);
+  }
+}
+
+/**
+ * @see hook_field_views_data_alter()
+ */
+function entity_property_views_data_alter(array &$data) {
+  foreach ($data as $table_name => $table_info) {
+    if (!empty($table_info['table']['entity type'])) {
+      $entity_type_id = $table_info['table']['entity type'];
+      //$entity_type = \Drupal::entityTypeManager()->getDefinition($entity_type_id);
+      $entity_field = \Drupal::service('entity_field.manager')->getFieldStorageDefinitions($entity_type_id);
+      /** @var FieldDefinitionInterface  $field */
+      foreach($entity_field as $field_name => $field) {
+        if ($field->getType() === 'entity_reference' && $field->getProvider() === 'entity_property' && $field_name == 'pol') {
+          if ($data[$table_name][$field_name]['filter']['id'] === 'numeric') {
+            $data[$table_name][$field_name]['filter']['id'] = "entity_property_list_field";
+          }
+        }
+      }
+    }
   }
 }
