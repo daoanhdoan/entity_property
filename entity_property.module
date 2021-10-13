@@ -45,7 +45,7 @@ function entity_property_views_data_alter(array &$data) {
       $entity_field = \Drupal::service('entity_field.manager')->getFieldStorageDefinitions($entity_type_id);
       /** @var FieldDefinitionInterface  $field */
       foreach($entity_field as $field_name => $field) {
-        if ($field->getType() === 'entity_reference' && $field->getProvider() === 'entity_property' && $field_name == 'pol') {
+        if ($field->getType() === 'entity_reference' && $field->getProvider() === 'entity_property') {
           if ($data[$table_name][$field_name]['filter']['id'] === 'numeric') {
             $data[$table_name][$field_name]['filter']['id'] = "entity_property_list_field";
           }
