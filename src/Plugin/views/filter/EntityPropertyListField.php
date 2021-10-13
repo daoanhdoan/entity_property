@@ -2,6 +2,7 @@
 
 namespace Drupal\entity_property\Plugin\views\filter;
 
+use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\FieldAPIHandlerTrait;
 use Drupal\views\Plugin\views\display\DisplayPluginBase;
@@ -27,19 +28,26 @@ class EntityPropertyListField extends ManyToOne {
     parent::init($view, $display, $options);
     $field_storage_definitions = $this->getEntityFieldManager()->getFieldStorageDefinitions($this->definition['entity_type']);
     $definition = $field_storage_definitions[$this->realField];
-    $settings = $definition->getSettings();
 
     $cache_keys = [$definition->getTargetEntityTypeId(), $definition->getName()];
     $cache_id = implode(':', $cache_keys);
 
     if (!isset($allowed_values[$cache_id])) {
       $options = \Drupal::service('plugin.manager.entity_reference_selection')->getSelectionHandler($definition, NULL)->getReferenceableEntities();
-      $target_type = $settings['target_type'];
-      if (!empty($options[$target_type])) {
-        $allowed_values[$cache_id] = $options[$target_type];
+      $bundles = NestedArray::getValue( $definition->getSettings(), ['handler_settings', 'target_bundles']);
+
+      $return = [];
+      foreach ($bundles as $bundle => $enable) {
+        if ($enable && !empty($options[$bundle])) {
+          $return = array_merge($return, $options[$bundle]);
+        }
+      }
+
+      if ($return) {
+        $allowed_values[$cache_id] = $return;
       }
     }
 
-    $this->valueOptions = $allowed_values[$cache_id];
+    $this->valueOptions = !empty($allowed_values[$cache_id]) ? $allowed_values[$cache_id] : [];
   }
 }
