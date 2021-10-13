@@ -34,7 +34,8 @@ class EntityPropertyListField extends ManyToOne {
 
     if (!isset($allowed_values[$cache_id])) {
       $options = \Drupal::service('plugin.manager.entity_reference_selection')->getSelectionHandler($definition, NULL)->getReferenceableEntities();
-      $bundles = NestedArray::getValue( $definition->getSettings(), ['handler_settings', 'target_bundles']);
+      $settings = $definition->getSettings();
+      $bundles = NestedArray::getValue( $settings, ['handler_settings', 'target_bundles']);
 
       $return = [];
       foreach ($bundles as $bundle => $enable) {
