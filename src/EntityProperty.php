@@ -65,6 +65,9 @@ class EntityProperty implements EntityPropertyInterface {
       ->setLabel($property['label'])
       ->setTargetEntityTypeId($entity_type_id)
       ->setRevisionable(TRUE);
+    if(!empty($property['description'])) {
+      $field->setDescription($property['description']);
+    }
     if (!empty($property['settings'])) {
       $field->setSettings($property['settings']);
     }

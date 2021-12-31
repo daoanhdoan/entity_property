@@ -4,7 +4,10 @@ entity_property.properties.*:
   mapping:
     label:
       type: string
-      label: 'Type'
+      label: 'Label'
+    description:
+      type: text
+      label: 'Description'
     name:
       type: label
       label: 'Name'

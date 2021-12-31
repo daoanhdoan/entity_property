@@ -127,6 +127,18 @@ class EntityPropertyForm extends FormBase {
         ]
       ]
     ];
+    $form['description'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Description'),
+      '#rows' => 3,
+      '#default_value' => !empty($values['description']) ? $values['description'] : "",
+      '#required' => FALSE,
+      '#states' => [
+        '!visible' => [
+          ':input[name="type"]' => ['value' => '']
+        ]
+      ]
+    ];
 
     $form['name'] = [
       '#type' => 'machine_name',

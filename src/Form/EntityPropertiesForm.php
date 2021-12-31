@@ -101,7 +101,7 @@ class EntityPropertiesForm extends FormBase {
 
     $form['properties'] = [
       '#type' => 'table',
-      '#header' => ['type' => 'Type', 'label' => 'Label', "",'required' => 'Required', 'configurable' => 'Configurable', 'settings' => 'Settings'],
+      '#header' => ['type' => 'Type', 'label' => 'Label', "", 'description' => 'Description','required' => 'Required', 'configurable' => 'Configurable', 'settings' => 'Settings'],
       '#attributes' => [
         'id' => 'entity-properties',
         'class' => ['clearfix']
@@ -155,6 +155,16 @@ class EntityPropertiesForm extends FormBase {
         ],
         '#states' => $state,
         '#required' => FALSE,
+      ];
+
+      $element['description'] = [
+        '#type' => 'textarea',
+        '#title' => $this->t('Description'),
+        '#title_display' => 'invisible',
+        '#rows' => 3,
+        '#default_value' => !empty($value['description']) ? $value['description'] : "",
+        '#required' => FALSE,
+        '#states' => $state
       ];
 
       $element['required'] = [

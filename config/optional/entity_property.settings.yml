@@ -16,5 +16,6 @@ field_types:
   text_long: text_long
   text_with_summary: text_with_summary
   timestamp: timestamp
+  uri: uri
 entity_types:
   node: node
