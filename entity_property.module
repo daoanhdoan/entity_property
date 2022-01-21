@@ -3,6 +3,8 @@
  *
  */
 
+use Drupal\Core\Entity\Sql\DefaultTableMapping;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\views\ViewsData;
 
@@ -36,12 +38,13 @@ function entity_property_entity_base_field_info_alter(&$fields, \Drupal\Core\Ent
 }
 
 /**
- * @see hook_field_views_data_alter()
+ * @see hook_views_data_alter()
  */
 function entity_property_views_data_alter(array &$data) {
   foreach ($data as $table_name => $table_info) {
     if (!empty($table_info['table']['entity type'])) {
       $entity_type_id = $table_info['table']['entity type'];
+      /** @var BaseFieldDefinition[] $entity_field */
       $entity_field = \Drupal::service('entity_field.manager')->getFieldStorageDefinitions($entity_type_id);
       /** @var FieldDefinitionInterface  $field */
       foreach($entity_field as $field_name => $field) {
